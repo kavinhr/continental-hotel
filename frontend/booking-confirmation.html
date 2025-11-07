@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation - The Continental</title>
+    
+    <!-- Google Fonts - Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .confirmation-section {
+            padding: 120px 0 40px;
+            min-height: calc(100vh - 200px);
+            background: linear-gradient(to bottom, var(--bg-color), white);
+        }
+        
+        .confirmation-card {
+            background-color: var(--card-bg);
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow-large);
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            color: var(--success-color);
+            margin-bottom: 1rem;
+        }
+        
+        .confirmation-title {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .confirmation-subtitle {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+        
+        .booking-details {
+            background-color: var(--bg-color);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
+        .detail-value {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .booking-id {
+            background: linear-gradient(135deg, var(--gold-color), #b8941f);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Navigation Bar -->
+    <nav class="navbar fixed-navbar" id="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🏨 The Continental</h1>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="booking.html">Book Room</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Confirmation Section -->
+    <section class="confirmation-section">
+        <div class="container">
+            <div class="confirmation-card" id="confirmationCard">
+                <div class="success-icon">✅</div>
+                <h1 class="confirmation-title">Booking Confirmed!</h1>
+                <p class="confirmation-subtitle">Thank you for choosing The Continental</p>
+                
+                <div class="booking-id" id="bookingId">
+                    Booking ID: Loading...
+                </div>
+                
+                <div class="booking-details" id="bookingDetails">
+                    <div class="detail-row">
+                        <span class="detail-label">Guest Name:</span>
+                        <span class="detail-value" id="guestName">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Room Type:</span>
+                        <span class="detail-value" id="roomType">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Room Number:</span>
+                        <span class="detail-value" id="roomNumber">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Room Price:</span>
+                        <span class="detail-value" id="roomPrice">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Check-in Date:</span>
+                        <span class="detail-value" id="checkIn">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Check-out Date:</span>
+                        <span class="detail-value" id="checkOut">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Number of Nights:</span>
+                        <span class="detail-value" id="nights">-</span>
+                    </div>
+                    <div class="detail-row" style="background-color: rgba(212, 175, 55, 0.1); padding: 1.5rem; border-radius: 8px; margin-top: 1rem;">
+                        <span class="detail-label" style="font-size: 1.2rem;">Total Amount:</span>
+                        <span class="detail-value" style="font-size: 1.5rem; color: var(--gold-color);" id="totalPrice">-</span>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="index.html" class="btn btn-primary">Back to Home</a>
+                    <a href="booking.html" class="btn btn-secondary">Book Another Room</a>
+                </div>
+                
+                <p style="margin-top: 2rem; color: var(--text-light); font-size: 0.9rem;">
+                    A confirmation email has been sent to <strong id="guestEmail">-</strong>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-dark">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 The Continental. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Load booking confirmation details
+        document.addEventListener('DOMContentLoaded', () => {
+            const bookingData = sessionStorage.getItem('bookingConfirmation');
+            
+            if (!bookingData) {
+                // No booking data, redirect to booking page
+                window.location.href = 'booking.html';
+                return;
+            }
+            
+            try {
+                const booking = JSON.parse(bookingData);
+                
+                // Populate confirmation page
+                document.getElementById('bookingId').textContent = `Booking ID: ${booking.bookingId}`;
+                document.getElementById('guestName').textContent = booking.customerName;
+                document.getElementById('guestEmail').textContent = booking.customerEmail;
+                document.getElementById('roomType').textContent = booking.roomType;
+                document.getElementById('roomNumber').textContent = booking.roomNumber;
+                document.getElementById('roomPrice').textContent = formatCurrency(booking.roomPrice) + ' per night';
+                document.getElementById('checkIn').textContent = formatDate(booking.checkIn);
+                document.getElementById('checkOut').textContent = formatDate(booking.checkOut);
+                document.getElementById('nights').textContent = booking.nights + ' night(s)';
+                document.getElementById('totalPrice').textContent = formatCurrency(booking.totalPrice);
+                
+                // Clear the booking data from sessionStorage
+                // sessionStorage.removeItem('bookingConfirmation'); // Keep it for now in case user wants to refresh
+            } catch (error) {
+                console.error('Error loading booking confirmation:', error);
+                document.getElementById('confirmationCard').innerHTML = `
+                    <div class="error-message">
+                        <p>Error loading booking details. Please contact support.</p>
+                        <a href="booking.html" class="btn btn-primary" style="margin-top: 1rem;">Back to Booking</a>
+                    </div>
+                `;
+            }
+        });
+        
+        // Handle navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
+

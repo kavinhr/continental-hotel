@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Hotel Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🏨 The Continental - Admin</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="booking.html">Book Room</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="admin.html" class="active">Admin</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Dashboard -->
+    <section class="admin-section">
+        <div class="container">
+            <h1 class="page-title">Admin Dashboard</h1>
+
+            <!-- Login Form (if not logged in) -->
+            <div id="loginSection" class="admin-card">
+                <h2>Admin Login</h2>
+                <form id="adminLoginForm">
+                    <div class="form-group">
+                        <label for="adminEmail">Email</label>
+                        <input type="email" id="adminEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Password</label>
+                        <input type="password" id="adminPassword" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+                <p class="info-text">Default credentials: admin@thecontinental.com / admin123</p>
+            </div>
+
+            <!-- Dashboard Content (if logged in) -->
+            <div id="dashboardSection" class="dashboard-content" style="display: none;">
+                <div class="dashboard-tabs">
+                    <button class="tab-btn active" data-tab="bookings">Bookings</button>
+                    <button class="tab-btn" data-tab="rooms">Rooms</button>
+                    <button class="tab-btn" data-tab="messages">Messages</button>
+                </div>
+
+                <!-- Bookings Tab -->
+                <div id="bookingsTab" class="tab-content active">
+                    <div class="tab-header">
+                        <h2>All Bookings</h2>
+                        <button class="btn btn-secondary" onclick="loadBookings()">Refresh</button>
+                    </div>
+                    <div id="bookingsTable" class="table-container">
+                        <p class="info-message">Loading bookings...</p>
+                    </div>
+                </div>
+
+                <!-- Rooms Tab -->
+                <div id="roomsTab" class="tab-content">
+                    <div class="tab-header">
+                        <h2>Room Management</h2>
+                        <button class="btn btn-primary" onclick="openRoomModal()">Add New Room</button>
+                    </div>
+                    <div id="roomsTable" class="table-container">
+                        <p class="info-message">Loading rooms...</p>
+                    </div>
+                </div>
+
+                <!-- Messages Tab -->
+                <div id="messagesTab" class="tab-content">
+                    <div class="tab-header">
+                        <h2>Contact Messages</h2>
+                        <button class="btn btn-secondary" onclick="loadMessages()">Refresh</button>
+                    </div>
+                    <div id="messagesTable" class="table-container">
+                        <p class="info-message">Loading messages...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Room Modal -->
+    <div id="roomModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="roomModalTitle">Add New Room</h2>
+            <form id="roomForm">
+                <input type="hidden" id="roomId">
+                
+                <div class="form-group">
+                    <label for="roomNumber">Room Number</label>
+                    <input type="text" id="roomNumber" name="roomNumber" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="roomType">Room Type</label>
+                    <select id="roomType" name="roomType" required>
+                        <option value="Single">Single</option>
+                        <option value="Double">Double</option>
+                        <option value="Suite">Suite</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="roomPrice">Price per Night (₹)</label>
+                    <input type="number" id="roomPrice" name="price" min="0" step="0.01" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="roomDescription">Description</label>
+                    <textarea id="roomDescription" name="description" rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="maxOccupancy">Max Occupancy</label>
+                    <input type="number" id="maxOccupancy" name="maxOccupancy" min="1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="roomAvailable" name="isAvailable" checked>
+                        Available
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Save Room</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 The Continental. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

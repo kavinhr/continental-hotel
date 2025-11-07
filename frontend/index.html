@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Continental - Luxury Experience Awaits</title>
+    
+    <!-- Google Fonts - Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS (Animate On Scroll) Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Fixed Transparent Navigation Bar -->
+    <nav class="navbar fixed-navbar" id="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🏨 The Continental</h1>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="#rooms">Rooms</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="booking.html" class="btn-nav">Book Now</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Fullscreen Hero Section with Background -->
+    <section class="hero-fullscreen" id="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content" data-aos="fade-up" data-aos-duration="1000">
+            <h1 class="hero-title" data-aos="fade-up" data-aos-delay="200">Welcome to The Continental</h1>
+            <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="400">Experience luxury and comfort in the heart of the city</p>
+            <div class="hero-buttons" data-aos="fade-up" data-aos-delay="600">
+                <a href="booking.html" class="btn btn-primary btn-large">Book Now</a>
+                <a href="#rooms" class="btn btn-secondary btn-large">Explore Rooms</a>
+            </div>
+        </div>
+        <div class="scroll-indicator" data-aos="fade-up" data-aos-delay="800">
+            <span>Scroll Down</span>
+            <div class="scroll-arrow">↓</div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Why Choose Us?</h2>
+            <div class="features-grid">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon">🛏️</div>
+                    <h3>Comfortable Rooms</h3>
+                    <p>Spacious and well-appointed rooms designed for your comfort</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon">🍽️</div>
+                    <h3>Fine Dining</h3>
+                    <p>Exquisite cuisine prepared by world-class chefs</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon">🏊</div>
+                    <h3>Recreation</h3>
+                    <p>Swimming pool, gym, and spa facilities available</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-icon">📍</div>
+                    <h3>Prime Location</h3>
+                    <p>Centrally located with easy access to major attractions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Room Types Section -->
+    <section class="room-types" id="rooms">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Our Room Types</h2>
+            <div class="rooms-grid">
+                <div class="room-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="room-image" style="background-image: url('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&h=600&fit=crop');">
+                        <div class="room-overlay">
+                            <a href="booking.html?type=Single" class="btn btn-primary">Book Now</a>
+                        </div>
+                    </div>
+                    <div class="room-content">
+                        <h3>Single Room</h3>
+                        <p>Perfect for solo travelers. Comfortable and cozy with modern amenities.</p>
+                        <div class="room-price">From ₹6,500 per night</div>
+                        <ul class="room-features">
+                            <li>✓ WiFi</li>
+                            <li>✓ TV</li>
+                            <li>✓ AC</li>
+                            <li>✓ Mini Bar</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="room-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="room-image" style="background-image: url('https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&h=600&fit=crop');">
+                        <div class="room-overlay">
+                            <a href="booking.html?type=Double" class="btn btn-primary">Book Now</a>
+                        </div>
+                    </div>
+                    <div class="room-content">
+                        <h3>Double Room</h3>
+                        <p>Ideal for couples. Spacious with modern amenities and city views.</p>
+                        <div class="room-price">From ₹9,800 per night</div>
+                        <ul class="room-features">
+                            <li>✓ WiFi</li>
+                            <li>✓ TV</li>
+                            <li>✓ AC</li>
+                            <li>✓ Balcony</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="room-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="room-image" style="background-image: url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop');">
+                        <div class="room-overlay">
+                            <a href="booking.html?type=Suite" class="btn btn-primary">Book Now</a>
+                        </div>
+                    </div>
+                    <div class="room-content">
+                        <h3>Suite</h3>
+                        <p>Luxurious suites with separate living areas and premium amenities.</p>
+                        <div class="room-price">From ₹20,500 per night</div>
+                        <ul class="room-features">
+                            <li>✓ WiFi</li>
+                            <li>✓ TV</li>
+                            <li>✓ Jacuzzi</li>
+                            <li>✓ Room Service</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="room-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="room-image" style="background-image: url('https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&h=600&fit=crop');">
+                        <div class="room-overlay">
+                            <a href="booking.html?type=Double" class="btn btn-primary">Book Now</a>
+                        </div>
+                    </div>
+                    <div class="room-content">
+                        <h3>Deluxe Double</h3>
+                        <p>Premium double room with ocean view and exclusive amenities.</p>
+                        <div class="room-price">From ₹12,300 per night</div>
+                        <ul class="room-features">
+                            <li>✓ Ocean View</li>
+                            <li>✓ Premium WiFi</li>
+                            <li>✓ Balcony</li>
+                            <li>✓ Mini Bar</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section" data-aos="fade-up">
+        <div class="container">
+            <h2>Ready to Experience Luxury?</h2>
+            <p>Book your stay today and enjoy world-class hospitality</p>
+            <a href="booking.html" class="btn btn-primary btn-large">Reserve Your Room</a>
+        </div>
+    </section>
+
+    <!-- Minimal Dark Footer -->
+    <footer class="footer-dark">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>The Continental</h3>
+                    <p>Your luxury destination in the heart of the city</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#rooms">Rooms</a></li>
+                        <li><a href="booking.html">Book Now</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>📧 info@thecontinental.com</p>
+                    <p>📞 +91 44 1234 5678</p>
+                    <p>📍 45, Mount Road, Guindy, Chennai, Tamil Nadu – 600032</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 The Continental. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AOS Library Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+    
+    <!-- Initialize AOS and Enhancements -->
+    <script>
+        // Initialize AOS (Animate On Scroll) library with enhanced settings
+        AOS.init({
+            duration: 1200,
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 80,
+            delay: 0,
+            mirror: false,
+            anchorPlacement: 'top-bottom'
+        });
+        
+        // Handle navbar scroll effect with smooth transition
+        let lastScroll = 0;
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            const currentScroll = window.scrollY;
+            
+            if (currentScroll > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            // Hide/show navbar on scroll (optional enhancement)
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                navbar.style.transform = 'translateY(-100%)';
+            } else {
+                navbar.style.transform = 'translateY(0)';
+            }
+            lastScroll = currentScroll;
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Performance: Lazy load images
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                        }
+                        observer.unobserve(img);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('img[data-src]').forEach(img => imageObserver.observe(img));
+        }
+        
+        console.log('✅ [FRONTEND] The Continental - Page loaded successfully');
+    </script>
+</body>
+</html>
