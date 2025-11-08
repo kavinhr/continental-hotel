@@ -101,17 +101,17 @@ npm run dev
 **Expected Output:**
 ```
 ✅ MongoDB Connected Successfully
-🚀 Server is running on http://localhost:3000
+🚀 Server is running on https://continental-backend-1i4g.onrender.com
 📁 Frontend files served from: [path]
 ```
 
 ### Access the Application
 
 Open your browser and navigate to:
-- **Homepage:** http://localhost:3000
-- **Booking Page:** http://localhost:3000/booking
-- **Admin Dashboard:** http://localhost:3000/admin
-- **Contact Page:** http://localhost:3000/contact
+- **Homepage:** https://continental-backend-1i4g.onrender.com
+- **Booking Page:** https://continental-backend-1i4g.onrender.com/booking
+- **Admin Dashboard:** https://continental-backend-1i4g.onrender.com/admin
+- **Contact Page:** https://continental-backend-1i4g.onrender.com/contact
 
 ---
 
@@ -119,7 +119,7 @@ Open your browser and navigate to:
 
 ### Test 1: View Available Rooms
 
-1. Go to http://localhost:3000/booking
+1. Go to https://continental-backend-1i4g.onrender.com/booking
 2. Select check-in and check-out dates
 3. Optionally select a room type filter
 4. Click "Search Rooms"
@@ -145,7 +145,7 @@ Open your browser and navigate to:
 4. Check the `bookings` collection
 
 **Option B: Using Admin Dashboard**
-1. Go to http://localhost:3000/admin
+1. Go to https://continental-backend-1i4g.onrender.com/admin
 2. Login with admin credentials:
    - Email: `admin@hotel.com`
    - Password: `admin123`
@@ -157,7 +157,7 @@ Open your browser and navigate to:
 You can test the API directly using curl or Postman:
 
 ```bash
-curl -X POST http://localhost:3000/api/book \
+curl -X POST https://continental-backend-1i4g.onrender.com/api/book \
   -H "Content-Type: application/json" \
   -d '{
     "roomType": "Single",
@@ -319,7 +319,7 @@ Before considering the setup complete:
 - [ ] Dependencies installed (`npm install`)
 - [ ] Database seeded (`node backend/seed.js`)
 - [ ] Server starts without errors (`npm start`)
-- [ ] Homepage loads at http://localhost:3000
+- [ ] Homepage loads at https://continental-backend-1i4g.onrender.com
 - [ ] Booking page accessible
 - [ ] Can search for rooms
 - [ ] Can create a booking

@@ -173,7 +173,7 @@ npm start
 ==================================================
 ✅ [SERVER] Database connected
 ✅ [SERVER] Tables initialized
-🚀 [SERVER] Server running on http://localhost:3000
+🚀 [SERVER] Server running on https://continental-backend-1i4g.onrender.com
 💾 [SERVER] Database: SQLite (continental.db)
 ==================================================
 ```

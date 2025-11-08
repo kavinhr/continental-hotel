@@ -80,9 +80,19 @@ app.use('/api/messages', messageRoutes);
 // Both endpoints call the same createBooking controller function
 app.post('/api/book', bookingController.createBooking);
 
+// Test route - Simple backend check
+app.get('/api', (req, res) => {
+  res.send('🏨 Continental Hotel backend is running!');
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Server is running' });
+  res.json({ 
+    status: 'OK', 
+    message: 'Server is running',
+    database: 'SQLite',
+    timestamp: new Date().toISOString()
+  });
 });
 
 // Serve frontend pages
@@ -136,19 +146,21 @@ app.use((err, req, res, next) => {
 // Initialize database first, then start server
 initDB().then(() => {
   app.listen(PORT, () => {
-    console.log('\n' + '='.repeat(50));
+    console.log('\n' + '='.repeat(60));
     console.log('🏨 THE CONTINENTAL - Hotel Management System');
-    console.log('='.repeat(50));
+    console.log('='.repeat(60));
     console.log(`✅ [SERVER] Database connected`);
     console.log(`✅ [SERVER] Tables initialized`);
     console.log(`🚀 [SERVER] Server running on http://localhost:${PORT}`);
-    console.log(`📁 [SERVER] Frontend files served from: ${path.join(__dirname, '../frontend')}`);
-    console.log(`🌐 [SERVER] Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🌐 [SERVER] Test route: http://localhost:${PORT}/api`);
+    console.log(`📁 [SERVER] Frontend: http://localhost:${PORT}/`);
+    console.log(`🌍 [SERVER] Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`💾 [SERVER] Database: SQLite (continental.db)`);
-    console.log('='.repeat(50) + '\n');
+    console.log('='.repeat(60) + '\n');
   });
 }).catch(err => {
   console.error('❌ [SERVER] Failed to start server:', err.message);
+  console.error('💡 [SERVER] Please check database configuration');
   process.exit(1);
 });
 

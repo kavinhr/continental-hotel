@@ -4,7 +4,7 @@
  */
 
 // API Base URL
-const API_BASE_URL = '/api';
+const API_BASE_URL = 'https://continental-backend-1i4g.onrender.com/api';
 
 // Utility Functions
 function showMessage(elementId, message, type = 'success') {

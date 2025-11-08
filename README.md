@@ -119,7 +119,7 @@ hotel-management-system/
 
 7. **Open your browser**
    
-   Navigate to: `http://localhost:3000`
+   Navigate to: `https://continental-backend-1i4g.onrender.com`
 
 ## 📖 Usage Guide
 

@@ -191,9 +191,9 @@ hotel-management-system/
    ```
 
 6. **Access Application:**
-   - Homepage: http://localhost:3000
-   - Booking: http://localhost:3000/booking
-   - Admin: http://localhost:3000/admin
+  - Homepage: https://continental-backend-1i4g.onrender.com
+  - Booking: https://continental-backend-1i4g.onrender.com/booking
+  - Admin: https://continental-backend-1i4g.onrender.com/admin
 
 ## 🎯 Testing Checklist
 
@@ -215,7 +215,7 @@ hotel-management-system/
 ==================================================
 🏨 THE CONTINENTAL - Hotel Management System
 ==================================================
-🚀 [SERVER] Server is running on http://localhost:3000
+🚀 [SERVER] Server is running on https://continental-backend-1i4g.onrender.com
 📊 [SERVER] MongoDB URI: mongodb://127.0.0.1:27017/continental_hotel
 ==================================================
 ```

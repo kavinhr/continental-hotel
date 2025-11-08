@@ -185,12 +185,12 @@ npm start
 ### 3. Test Features
 
 **Homepage:**
-- Visit http://localhost:3000
+- Visit https://continental-backend-1i4g.onrender.com
 - Check room prices show ₹6,500, ₹9,800, etc.
 - Check footer shows Chennai address
 
 **Search Rooms:**
-- Go to http://localhost:3000/booking
+- Go to https://continental-backend-1i4g.onrender.com/booking
 - Select check-in and check-out dates
 - Click "Search Rooms"
 - Rooms should display with ₹ prices
@@ -204,7 +204,7 @@ npm start
 - Confirmation page shows all details
 
 **Contact:**
-- Visit http://localhost:3000/contact
+- Visit https://continental-backend-1i4g.onrender.com/contact
 - Check address shows Chennai location
 - Check phone shows +91 format
 
