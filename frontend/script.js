@@ -394,49 +394,124 @@ if (document.getElementById('bookingForm')) {
 
 // ==================== ADMIN PAGE ====================
 
-// Admin Login
+// Admin Login Function
+window.loginAdmin = async function(email, password) {
+    try {
+        const result = await apiRequest('/users/login', {
+            method: 'POST',
+            body: JSON.stringify({ email, password })
+        });
+
+        if (!result.user || result.user.role !== 'admin') {
+            throw new Error('Access denied. Admin privileges required.');
+        }
+
+        if (!result.token) {
+            throw new Error('Authentication token not received.');
+        }
+
+        // Store token and user data
+        setAuthToken(result.token);
+        localStorage.setItem('user', JSON.stringify(result.user));
+        
+        // Show dashboard and hide login
+        const loginSection = document.getElementById('loginSection');
+        const dashboardSection = document.getElementById('dashboardSection');
+        
+        if (loginSection) loginSection.style.display = 'none';
+        if (dashboardSection) dashboardSection.style.display = 'block';
+        
+        // Load all data
+        await Promise.all([
+            loadBookings(),
+            loadRooms(),
+            loadMessages()
+        ]);
+        
+        return true;
+    } catch (error) {
+        console.error('Login error:', error);
+        throw error;
+    }
+};
+
+// Admin Login Form Handler
 if (document.getElementById('adminLoginForm')) {
     document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const email = document.getElementById('adminEmail').value;
+        const email = document.getElementById('adminEmail').value.trim();
         const password = document.getElementById('adminPassword').value;
+        const submitButton = e.target.querySelector('button[type="submit"]');
+        const originalText = submitButton.textContent;
+
+        if (!email || !password) {
+            alert('Please enter both email and password.');
+            return;
+        }
+
+        // Show loading state
+        submitButton.disabled = true;
+        submitButton.textContent = 'Logging in...';
 
         try {
-            const result = await apiRequest('/users/login', {
-                method: 'POST',
-                body: JSON.stringify({ email, password })
-            });
-
-            if (result.user.role !== 'admin') {
-                alert('Access denied. Admin privileges required.');
-                return;
-            }
-
-            setAuthToken(result.token);
-            localStorage.setItem('user', JSON.stringify(result.user));
-            
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('dashboardSection').style.display = 'block';
-            
-            // Load initial data
-            loadBookings();
-            loadRooms();
-            loadMessages();
+            await loginAdmin(email, password);
         } catch (error) {
-            alert('Login failed: ' + error.message);
+            alert('Login failed: ' + (error.message || 'Please check your credentials and try again.'));
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = originalText;
         }
     });
 }
 
-// Check if already logged in
+// Logout Function
+window.logoutAdmin = function() {
+    if (confirm('Are you sure you want to logout?')) {
+        removeAuthToken();
+        localStorage.removeItem('user');
+        
+        const loginSection = document.getElementById('loginSection');
+        const dashboardSection = document.getElementById('dashboardSection');
+        
+        if (loginSection) loginSection.style.display = 'block';
+        if (dashboardSection) dashboardSection.style.display = 'none';
+        
+        // Clear form
+        const loginForm = document.getElementById('adminLoginForm');
+        if (loginForm) loginForm.reset();
+    }
+};
+
+// Check if already logged in on page load
 document.addEventListener('DOMContentLoaded', () => {
-    if (getAuthToken() && isAdmin()) {
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('dashboardSection').style.display = 'block';
+    const loginSection = document.getElementById('loginSection');
+    const dashboardSection = document.getElementById('dashboardSection');
+    
+    if (!loginSection || !dashboardSection) return;
+    
+    const token = getAuthToken();
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    
+    if (token && user.role === 'admin') {
+        // User is logged in, show dashboard
+        loginSection.style.display = 'none';
+        dashboardSection.style.display = 'block';
+        
+        // Load all data
         loadBookings();
         loadRooms();
         loadMessages();
+    } else {
+        // User is not logged in, show login form
+        loginSection.style.display = 'block';
+        dashboardSection.style.display = 'none';
+        
+        // Clear any invalid tokens
+        if (token) {
+            removeAuthToken();
+            localStorage.removeItem('user');
+        }
     }
 });
 
@@ -462,9 +537,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Load Bookings
 window.loadBookings = async function() {
+    const container = document.getElementById('bookingsTable');
+    if (!container) return;
+    
     try {
+        container.innerHTML = '<p class="info-message">Loading bookings...</p>';
+        
         const bookings = await apiRequest('/bookings');
-        const container = document.getElementById('bookingsTable');
+        
+        if (!Array.isArray(bookings)) {
+            throw new Error('Invalid response format');
+        }
 
         if (bookings.length === 0) {
             container.innerHTML = '<p class="info-message">No bookings found.</p>';
@@ -472,71 +555,91 @@ window.loadBookings = async function() {
         }
 
         container.innerHTML = `
-            <table>
-                <thead>
-                    <tr>
-                        <th>Booking ID</th>
-                        <th>Customer</th>
-                        <th>Room</th>
-                        <th>Check-in</th>
-                        <th>Check-out</th>
-                        <th>Total Price</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${bookings.map(booking => `
+            <div class="table-wrapper">
+                <table>
+                    <thead>
                         <tr>
-                            <td>${booking._id.substring(0, 8)}...</td>
-                            <td>${booking.customerName}<br><small>${booking.customerEmail}</small></td>
-                            <td>${booking.room.roomNumber} (${booking.room.roomType})</td>
-                            <td>${formatDate(booking.checkIn)}</td>
-                            <td>${formatDate(booking.checkOut)}</td>
-                            <td>${formatCurrency(booking.totalPrice)}</td>
-                            <td>
-                                <span class="status-badge status-${booking.status.toLowerCase()}">
-                                    ${booking.status}
-                                </span>
-                            </td>
-                            <td>
-                                <select onchange="updateBookingStatus('${booking._id}', this.value)" 
-                                        style="padding: 5px; border-radius: 4px;">
-                                    <option value="Pending" ${booking.status === 'Pending' ? 'selected' : ''}>Pending</option>
-                                    <option value="Confirmed" ${booking.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
-                                    <option value="Cancelled" ${booking.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-                                    <option value="Completed" ${booking.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                                </select>
-                                <button class="btn btn-danger" style="padding: 5px 10px; margin-top: 5px; width: 100%;" 
-                                        onclick="deleteBooking('${booking._id}')">Delete</button>
-                            </td>
+                            <th>Booking ID</th>
+                            <th>Customer</th>
+                            <th>Room</th>
+                            <th>Check-in</th>
+                            <th>Check-out</th>
+                            <th>Total Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </tr>
-                    `).join('')}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        ${bookings.map(booking => {
+                            const bookingId = booking._id || booking.id || 'N/A';
+                            const room = booking.room || {};
+                            return `
+                            <tr>
+                                <td>${String(bookingId).substring(0, 8)}...</td>
+                                <td>
+                                    <strong>${booking.customerName || 'N/A'}</strong><br>
+                                    <small style="color: var(--text-light);">${booking.customerEmail || ''}</small>
+                                </td>
+                                <td>${room.roomNumber || 'N/A'} (${room.roomType || 'N/A'})</td>
+                                <td>${formatDate(booking.checkIn)}</td>
+                                <td>${formatDate(booking.checkOut)}</td>
+                                <td><strong>${formatCurrency(booking.totalPrice)}</strong></td>
+                                <td>
+                                    <span class="status-badge status-${(booking.status || 'Pending').toLowerCase()}">
+                                        ${booking.status || 'Pending'}
+                                    </span>
+                                </td>
+                                <td>
+                                    <select onchange="updateBookingStatus('${bookingId}', this.value)" 
+                                            class="status-select">
+                                        <option value="Pending" ${(booking.status || 'Pending') === 'Pending' ? 'selected' : ''}>Pending</option>
+                                        <option value="Confirmed" ${(booking.status || 'Pending') === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                                        <option value="Cancelled" ${(booking.status || 'Pending') === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                                        <option value="Completed" ${(booking.status || 'Pending') === 'Completed' ? 'selected' : ''}>Completed</option>
+                                    </select>
+                                    <button class="btn btn-danger btn-sm" 
+                                            onclick="deleteBooking('${bookingId}')">Delete</button>
+                                </td>
+                            </tr>
+                        `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </div>
         `;
     } catch (error) {
-        document.getElementById('bookingsTable').innerHTML = 
-            '<p class="info-message">Error loading bookings: ' + error.message + '</p>';
+        console.error('Error loading bookings:', error);
+        container.innerHTML = `<p class="info-message error">Error loading bookings: ${error.message || 'Please try again later.'}</p>`;
     }
 };
 
 // Update Booking Status
 window.updateBookingStatus = async function(bookingId, status) {
+    if (!bookingId || !status) {
+        alert('Invalid booking data.');
+        return;
+    }
+    
     try {
         await apiRequest(`/bookings/${bookingId}`, {
             method: 'PUT',
             body: JSON.stringify({ status })
         });
-        loadBookings();
+        await loadBookings();
     } catch (error) {
-        alert('Error updating booking: ' + error.message);
+        console.error('Error updating booking:', error);
+        alert('Error updating booking: ' + (error.message || 'Please try again.'));
     }
 };
 
 // Delete Booking
 window.deleteBooking = async function(bookingId) {
-    if (!confirm('Are you sure you want to delete this booking?')) {
+    if (!bookingId) {
+        alert('Invalid booking ID.');
+        return;
+    }
+    
+    if (!confirm('Are you sure you want to delete this booking? This action cannot be undone.')) {
         return;
     }
 
@@ -544,17 +647,26 @@ window.deleteBooking = async function(bookingId) {
         await apiRequest(`/bookings/${bookingId}`, {
             method: 'DELETE'
         });
-        loadBookings();
+        await loadBookings();
     } catch (error) {
-        alert('Error deleting booking: ' + error.message);
+        console.error('Error deleting booking:', error);
+        alert('Error deleting booking: ' + (error.message || 'Please try again.'));
     }
 };
 
 // Load Rooms
 window.loadRooms = async function() {
+    const container = document.getElementById('roomsTable');
+    if (!container) return;
+    
     try {
+        container.innerHTML = '<p class="info-message">Loading rooms...</p>';
+        
         const rooms = await apiRequest('/rooms');
-        const container = document.getElementById('roomsTable');
+        
+        if (!Array.isArray(rooms)) {
+            throw new Error('Invalid response format');
+        }
 
         if (rooms.length === 0) {
             container.innerHTML = '<p class="info-message">No rooms found. Add your first room!</p>';
@@ -562,39 +674,48 @@ window.loadRooms = async function() {
         }
 
         container.innerHTML = `
-            <table>
-                <thead>
-                    <tr>
-                        <th>Room Number</th>
-                        <th>Type</th>
-                        <th>Price/Night</th>
-                        <th>Max Occupancy</th>
-                        <th>Available</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${rooms.map(room => `
+            <div class="table-wrapper">
+                <table>
+                    <thead>
                         <tr>
-                            <td>${room.roomNumber}</td>
-                            <td>${room.roomType}</td>
-                            <td>${formatCurrency(room.price)}</td>
-                            <td>${room.maxOccupancy}</td>
-                            <td>${room.isAvailable ? '✅ Yes' : '❌ No'}</td>
-                            <td>
-                                <button class="btn btn-primary" style="padding: 5px 10px; margin-right: 5px;" 
-                                        onclick="editRoom('${room._id}')">Edit</button>
-                                <button class="btn btn-danger" style="padding: 5px 10px;" 
-                                        onclick="deleteRoom('${room._id}')">Delete</button>
-                            </td>
+                            <th>Room Number</th>
+                            <th>Type</th>
+                            <th>Price/Night</th>
+                            <th>Max Occupancy</th>
+                            <th>Available</th>
+                            <th>Actions</th>
                         </tr>
-                    `).join('')}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        ${rooms.map(room => {
+                            const roomId = room._id || room.id || 'N/A';
+                            return `
+                            <tr>
+                                <td><strong>${room.roomNumber || 'N/A'}</strong></td>
+                                <td>${room.roomType || 'N/A'}</td>
+                                <td><strong>${formatCurrency(room.price)}</strong></td>
+                                <td>${room.maxOccupancy || 'N/A'}</td>
+                                <td>
+                                    <span class="status-badge ${room.isAvailable ? 'status-confirmed' : 'status-cancelled'}">
+                                        ${room.isAvailable ? '✅ Available' : '❌ Unavailable'}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" 
+                                            onclick="editRoom('${roomId}')">Edit</button>
+                                    <button class="btn btn-danger btn-sm" 
+                                            onclick="deleteRoom('${roomId}')">Delete</button>
+                                </td>
+                            </tr>
+                        `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </div>
         `;
     } catch (error) {
-        document.getElementById('roomsTable').innerHTML = 
-            '<p class="info-message">Error loading rooms: ' + error.message + '</p>';
+        console.error('Error loading rooms:', error);
+        container.innerHTML = `<p class="info-message error">Error loading rooms: ${error.message || 'Please try again later.'}</p>`;
     }
 };
 
@@ -604,18 +725,23 @@ window.openRoomModal = function(roomId = null) {
     const form = document.getElementById('roomForm');
     const title = document.getElementById('roomModalTitle');
 
+    if (!modal || !form || !title) return;
+
     if (roomId) {
         // Edit mode - load room data
         apiRequest(`/rooms/${roomId}`).then(room => {
-            document.getElementById('roomId').value = room._id;
-            document.getElementById('roomNumber').value = room.roomNumber;
-            document.getElementById('roomType').value = room.roomType;
-            document.getElementById('roomPrice').value = room.price;
+            document.getElementById('roomId').value = room._id || room.id || '';
+            document.getElementById('roomNumber').value = room.roomNumber || '';
+            document.getElementById('roomType').value = room.roomType || '';
+            document.getElementById('roomPrice').value = room.price || '';
             document.getElementById('roomDescription').value = room.description || '';
-            document.getElementById('maxOccupancy').value = room.maxOccupancy;
-            document.getElementById('roomAvailable').checked = room.isAvailable;
+            document.getElementById('maxOccupancy').value = room.maxOccupancy || '';
+            document.getElementById('roomAvailable').checked = room.isAvailable !== false;
             title.textContent = 'Edit Room';
             modal.style.display = 'block';
+        }).catch(error => {
+            console.error('Error loading room:', error);
+            alert('Error loading room: ' + (error.message || 'Please try again.'));
         });
     } else {
         // Add mode
@@ -625,6 +751,22 @@ window.openRoomModal = function(roomId = null) {
         modal.style.display = 'block';
     }
 };
+
+// Close Room Modal
+if (document.querySelector('.close')) {
+    document.querySelector('.close').addEventListener('click', () => {
+        const modal = document.getElementById('roomModal');
+        if (modal) modal.style.display = 'none';
+    });
+    
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+        const modal = document.getElementById('roomModal');
+        if (e.target === modal && modal) {
+            modal.style.display = 'none';
+        }
+    });
+}
 
 // Edit Room
 window.editRoom = function(roomId) {
@@ -638,13 +780,23 @@ if (document.getElementById('roomForm')) {
 
         const roomId = document.getElementById('roomId').value;
         const roomData = {
-            roomNumber: document.getElementById('roomNumber').value,
+            roomNumber: document.getElementById('roomNumber').value.trim(),
             roomType: document.getElementById('roomType').value,
             price: parseFloat(document.getElementById('roomPrice').value),
-            description: document.getElementById('roomDescription').value,
+            description: document.getElementById('roomDescription').value.trim(),
             maxOccupancy: parseInt(document.getElementById('maxOccupancy').value),
             isAvailable: document.getElementById('roomAvailable').checked
         };
+
+        if (!roomData.roomNumber || !roomData.roomType || !roomData.price || !roomData.maxOccupancy) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+
+        const submitButton = e.target.querySelector('button[type="submit"]');
+        const originalText = submitButton.textContent;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Saving...';
 
         try {
             if (roomId) {
@@ -662,16 +814,25 @@ if (document.getElementById('roomForm')) {
             }
 
             document.getElementById('roomModal').style.display = 'none';
-            loadRooms();
+            await loadRooms();
         } catch (error) {
-            alert('Error saving room: ' + error.message);
+            console.error('Error saving room:', error);
+            alert('Error saving room: ' + (error.message || 'Please try again.'));
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = originalText;
         }
     });
 }
 
 // Delete Room
 window.deleteRoom = async function(roomId) {
-    if (!confirm('Are you sure you want to delete this room?')) {
+    if (!roomId) {
+        alert('Invalid room ID.');
+        return;
+    }
+    
+    if (!confirm('Are you sure you want to delete this room? This action cannot be undone.')) {
         return;
     }
 
@@ -679,17 +840,26 @@ window.deleteRoom = async function(roomId) {
         await apiRequest(`/rooms/${roomId}`, {
             method: 'DELETE'
         });
-        loadRooms();
+        await loadRooms();
     } catch (error) {
-        alert('Error deleting room: ' + error.message);
+        console.error('Error deleting room:', error);
+        alert('Error deleting room: ' + (error.message || 'Please try again.'));
     }
 };
 
 // Load Messages
 window.loadMessages = async function() {
+    const container = document.getElementById('messagesTable');
+    if (!container) return;
+    
     try {
+        container.innerHTML = '<p class="info-message">Loading messages...</p>';
+        
         const messages = await apiRequest('/messages');
-        const container = document.getElementById('messagesTable');
+        
+        if (!Array.isArray(messages)) {
+            throw new Error('Invalid response format');
+        }
 
         if (messages.length === 0) {
             container.innerHTML = '<p class="info-message">No messages found.</p>';
@@ -697,61 +867,85 @@ window.loadMessages = async function() {
         }
 
         container.innerHTML = `
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Subject</th>
-                        <th>Message</th>
-                        <th>Date</th>
-                        <th>Read</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${messages.map(message => `
-                        <tr style="${message.isRead ? '' : 'background-color: #fff3cd;'}">
-                            <td>${message.name}</td>
-                            <td>${message.email}</td>
-                            <td>${message.subject}</td>
-                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">${message.message}</td>
-                            <td>${formatDate(message.createdAt)}</td>
-                            <td>${message.isRead ? '✅' : '❌'}</td>
-                            <td>
-                                ${!message.isRead ? `
-                                    <button class="btn btn-primary" style="padding: 5px 10px; margin-right: 5px;" 
-                                            onclick="markMessageAsRead('${message._id}')">Mark Read</button>
-                                ` : ''}
-                                <button class="btn btn-danger" style="padding: 5px 10px;" 
-                                        onclick="deleteMessage('${message._id}')">Delete</button>
-                            </td>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>Message</th>
+                            <th>Date</th>
+                            <th>Read</th>
+                            <th>Actions</th>
                         </tr>
-                    `).join('')}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        ${messages.map(message => {
+                            const messageId = message._id || message.id || 'N/A';
+                            const isRead = message.isRead || false;
+                            return `
+                            <tr class="${!isRead ? 'unread-message' : ''}">
+                                <td><strong>${message.name || 'N/A'}</strong></td>
+                                <td>${message.email || 'N/A'}</td>
+                                <td>${message.subject || 'N/A'}</td>
+                                <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" 
+                                    title="${(message.message || '').replace(/"/g, '&quot;')}">
+                                    ${message.message || 'N/A'}
+                                </td>
+                                <td>${formatDate(message.createdAt || message.created_at)}</td>
+                                <td>
+                                    <span class="status-badge ${isRead ? 'status-confirmed' : 'status-pending'}">
+                                        ${isRead ? '✅ Read' : '❌ Unread'}
+                                    </span>
+                                </td>
+                                <td>
+                                    ${!isRead ? `
+                                        <button class="btn btn-primary btn-sm" 
+                                                onclick="markMessageAsRead('${messageId}')">Mark Read</button>
+                                    ` : ''}
+                                    <button class="btn btn-danger btn-sm" 
+                                            onclick="deleteMessage('${messageId}')">Delete</button>
+                                </td>
+                            </tr>
+                        `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </div>
         `;
     } catch (error) {
-        document.getElementById('messagesTable').innerHTML = 
-            '<p class="info-message">Error loading messages: ' + error.message + '</p>';
+        console.error('Error loading messages:', error);
+        container.innerHTML = `<p class="info-message error">Error loading messages: ${error.message || 'Please try again later.'}</p>`;
     }
 };
 
 // Mark Message as Read
 window.markMessageAsRead = async function(messageId) {
+    if (!messageId) {
+        alert('Invalid message ID.');
+        return;
+    }
+    
     try {
         await apiRequest(`/messages/${messageId}/read`, {
             method: 'PUT'
         });
-        loadMessages();
+        await loadMessages();
     } catch (error) {
-        alert('Error updating message: ' + error.message);
+        console.error('Error marking message as read:', error);
+        alert('Error updating message: ' + (error.message || 'Please try again.'));
     }
 };
 
 // Delete Message
 window.deleteMessage = async function(messageId) {
-    if (!confirm('Are you sure you want to delete this message?')) {
+    if (!messageId) {
+        alert('Invalid message ID.');
+        return;
+    }
+    
+    if (!confirm('Are you sure you want to delete this message? This action cannot be undone.')) {
         return;
     }
 
@@ -759,9 +953,10 @@ window.deleteMessage = async function(messageId) {
         await apiRequest(`/messages/${messageId}`, {
             method: 'DELETE'
         });
-        loadMessages();
+        await loadMessages();
     } catch (error) {
-        alert('Error deleting message: ' + error.message);
+        console.error('Error deleting message:', error);
+        alert('Error deleting message: ' + (error.message || 'Please try again.'));
     }
 };
 
