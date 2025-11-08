@@ -785,10 +785,20 @@ if (document.getElementById('contactForm')) {
                 body: JSON.stringify(messageData)
             });
 
-            showMessage('contactMessage', 'Message sent successfully! We will get back to you soon.', 'success');
+            const messageDisplay = document.getElementById('contactMessageDisplay') || document.getElementById('contactMessage');
+            if (messageDisplay) {
+                showMessage(messageDisplay.id, 'Message sent successfully! We will get back to you soon.', 'success');
+            } else {
+                alert('Message sent successfully! We will get back to you soon.');
+            }
             document.getElementById('contactForm').reset();
         } catch (error) {
-            showMessage('contactMessage', 'Error sending message: ' + error.message, 'error');
+            const messageDisplay = document.getElementById('contactMessageDisplay') || document.getElementById('contactMessage');
+            if (messageDisplay) {
+                showMessage(messageDisplay.id, 'Error sending message: ' + error.message, 'error');
+            } else {
+                alert('Error sending message: ' + error.message);
+            }
         }
     });
 }

@@ -3,21 +3,329 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Hotel Management System</title>
+    <title>Contact Us - The Continental</title>
+    
+    <!-- Google Fonts - Playfair Display & Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Additional styles for contact page -->
+    <style>
+        .contact-hero {
+            background: linear-gradient(135deg, rgba(27, 27, 27, 0.9) 0%, rgba(27, 27, 27, 0.7) 100%),
+                        url('https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=1920&h=800&fit=crop&q=90') center/cover;
+            padding: 180px 0 100px;
+            text-align: center;
+            color: var(--text-white);
+            position: relative;
+        }
+        
+        .contact-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(27, 27, 27, 0.6) 0%, rgba(27, 27, 27, 0.4) 100%);
+        }
+        
+        .contact-hero .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .contact-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--text-white);
+            margin-bottom: var(--spacing-sm);
+            text-shadow: 2px 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .contact-hero p {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .contact-main-section {
+            padding: var(--spacing-xl) 0;
+            background: linear-gradient(to bottom, var(--beige) 0%, var(--ivory) 100%);
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--charcoal);
+            margin-bottom: var(--spacing-sm);
+            position: relative;
+            padding-bottom: var(--spacing-md);
+        }
+        
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+        
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .contact-info-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            height: fit-content;
+        }
+        
+        .contact-info-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--charcoal);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 2px solid var(--gold);
+        }
+        
+        .contact-item {
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: flex-start;
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-base);
+            background: var(--beige-light);
+        }
+        
+        .contact-item:hover {
+            background: var(--ivory);
+            transform: translateX(5px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .contact-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .contact-icon-wrapper {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-gold);
+        }
+        
+        .contact-icon-wrapper svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--charcoal);
+            stroke-width: 2;
+        }
+        
+        .contact-item-content h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            color: var(--charcoal);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .contact-item-content p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin: 0;
+        }
+        
+        .contact-item-content a {
+            color: var(--gold-dark);
+            text-decoration: none;
+            transition: color var(--transition-base);
+        }
+        
+        .contact-item-content a:hover {
+            color: var(--gold);
+            text-decoration: underline;
+        }
+        
+        .contact-form-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .contact-form-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--charcoal);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 2px solid var(--gold);
+        }
+        
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+            position: relative;
+        }
+        
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: var(--spacing-xs);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .form-group label svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--gold);
+            stroke-width: 2;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: var(--radius-md);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            background: var(--beige-light);
+            color: var(--charcoal);
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: var(--ivory-light);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1), var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+        
+        .map-section {
+            margin-top: var(--spacing-xl);
+        }
+        
+        .map-container {
+            height: 500px;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        
+        .business-hours {
+            background: linear-gradient(135deg, var(--beige) 0%, var(--ivory) 100%);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            margin-top: var(--spacing-md);
+        }
+        
+        .business-hours h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--charcoal);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .business-hours p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        @media (max-width: 968px) {
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+            }
+            
+            .map-container {
+                height: 400px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .contact-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .contact-info-card,
+            .contact-form-card {
+                padding: var(--spacing-md);
+            }
+            
+            .section-header h2 {
+                font-size: 2rem;
+            }
+            
+            .map-container {
+                height: 350px;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Fixed Navigation Bar -->
     <nav class="navbar fixed-navbar" id="navbar">
         <div class="container">
             <div class="nav-brand">
-                <h1>🏨 The Continental</h1>
+                <h1>The Continental</h1>
             </div>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="booking.html">Book Room</a></li>
+                <li><a href="index.html#rooms">Rooms</a></li>
                 <li><a href="contact.html" class="active">Contact</a></li>
-                <li><a href="admin.html">Admin</a></li>
+                <li><a href="booking.html" class="btn-nav">Book Now</a></li>
             </ul>
             <div class="hamburger" id="hamburger">
                 <span></span>
@@ -27,67 +335,234 @@
         </div>
     </nav>
 
-    <!-- Contact Section -->
-    <section class="contact-section">
+    <!-- Contact Hero Section -->
+    <section class="contact-hero">
         <div class="container">
-            <h1 class="page-title">Contact Us</h1>
+            <h1>Get in Touch</h1>
+            <p>We're here to help you plan your perfect stay. Reach out to us and experience our world-class hospitality.</p>
+        </div>
+    </section>
+
+    <!-- Contact Main Section -->
+    <section class="contact-main-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Contact Information</h2>
+            </div>
             
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h2>Get in Touch</h2>
-                    <div class="info-item">
-                        <strong>📍 Address:</strong>
-                        <p>The Continental, 45, Mount Road, Guindy, Chennai, Tamil Nadu – 600032</p>
+            <div class="contact-wrapper">
+                <!-- Contact Info Card -->
+                <div class="contact-info-card">
+                    <h3>Visit Us</h3>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                        </div>
+                        <div class="contact-item-content">
+                            <h4>Address</h4>
+                            <p>The Continental<br>
+                            45, Mount Road, Guindy<br>
+                            Chennai, Tamil Nadu – 600032<br>
+                            India</p>
+                        </div>
                     </div>
-                    <div class="info-item">
-                        <strong>📞 Phone:</strong>
-                        <p>+91 44 1234 5678</p>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                        </div>
+                        <div class="contact-item-content">
+                            <h4>Phone</h4>
+                            <p><a href="tel:+914412345678">+91 44 1234 5678</a></p>
+                            <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-light);">Available 24/7</p>
+                        </div>
                     </div>
-                    <div class="info-item">
-                        <strong>✉️ Email:</strong>
-                        <p>info@thecontinental.com</p>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                        </div>
+                        <div class="contact-item-content">
+                            <h4>Email</h4>
+                            <p><a href="mailto:info@thecontinental.com">info@thecontinental.com</a></p>
+                            <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-light);">We'll respond within 24 hours</p>
+                        </div>
                     </div>
-                    <div class="info-item">
-                        <strong>🕒 Business Hours:</strong>
-                        <p>Monday - Sunday: 24/7</p>
+                    
+                    <div class="business-hours">
+                        <h4>Business Hours</h4>
+                        <p><strong>Reception:</strong> Open 24/7</p>
+                        <p><strong>Reservations:</strong> Monday - Sunday, 24/7</p>
+                        <p><strong>Concierge:</strong> Available round the clock</p>
                     </div>
                 </div>
-
+                
+                <!-- Contact Form Card -->
                 <div class="contact-form-card">
-                    <h2>Send us a Message</h2>
+                    <h3>Send us a Message</h3>
                     <form id="contactForm">
                         <div class="form-group">
-                            <label for="contactName">Your Name</label>
-                            <input type="text" id="contactName" name="name" required>
+                            <label for="contactName">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                                Your Name
+                            </label>
+                            <input type="text" id="contactName" name="name" required placeholder="Enter your full name">
                         </div>
                         
                         <div class="form-group">
-                            <label for="contactEmail">Your Email</label>
-                            <input type="email" id="contactEmail" name="email" required>
+                            <label for="contactEmail">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                                Your Email
+                            </label>
+                            <input type="email" id="contactEmail" name="email" required placeholder="your.email@example.com">
                         </div>
                         
                         <div class="form-group">
-                            <label for="contactSubject">Subject</label>
-                            <input type="text" id="contactSubject" name="subject" required>
+                            <label for="contactSubject">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                                Subject
+                            </label>
+                            <input type="text" id="contactSubject" name="subject" required placeholder="What is this regarding?">
                         </div>
                         
                         <div class="form-group">
-                            <label for="contactMessage">Message</label>
-                            <textarea id="contactMessage" name="message" rows="5" required></textarea>
+                            <label for="contactMessage">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                    <line x1="16" y1="13" x2="8" y2="13"/>
+                                    <line x1="16" y1="17" x2="8" y2="17"/>
+                                    <polyline points="10 9 9 9 8 9"/>
+                                </svg>
+                                Message
+                            </label>
+                            <textarea id="contactMessage" name="message" rows="6" required placeholder="Tell us how we can help you..."></textarea>
                         </div>
                         
-                        <button type="submit" class="btn btn-primary">Send Message</button>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
                     </form>
-                    <div id="contactMessage" class="message"></div>
+                    <div id="contactMessageDisplay" class="message" style="margin-top: var(--spacing-md);"></div>
+                </div>
+            </div>
+            
+            <!-- Map Section -->
+            <div class="map-section">
+                <div class="section-header">
+                    <h2>Find Us on the Map</h2>
+                </div>
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.4774309666!2d80.2206!3d12.9716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDU4JzE3LjgiTiA4MMKwMTMnMTQuMiJF!5e0!3m2!1sen!2sin!4v1234567890"
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="The Continental Hotel Location - 45, Mount Road, Guindy, Chennai">
+                    </iframe>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer-dark">
         <div class="container">
-            <p>&copy; 2024 The Continental. All rights reserved.</p>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>The Continental</h3>
+                    <p>Where luxury meets timeless elegance. Experience unparalleled hospitality in the heart of Chennai.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook" class="social-link">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Instagram" class="social-link">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Twitter" class="social-link">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="LinkedIn" class="social-link">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                                <rect x="2" y="9" width="4" height="12"/>
+                                <circle cx="4" cy="4" r="2"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#rooms">Rooms & Suites</a></li>
+                        <li><a href="booking.html">Reservations</a></li>
+                        <li><a href="index.html#testimonials">Guest Reviews</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Information</h4>
+                    <p>
+                        <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        45, Mount Road, Guindy<br>Chennai, Tamil Nadu – 600032
+                    </p>
+                    <p>
+                        <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                        +91 44 1234 5678
+                    </p>
+                    <p>
+                        <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        info@thecontinental.com
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe to receive exclusive offers and updates</p>
+                    <form class="newsletter-form" id="newsletterForm">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 The Continental. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
         </div>
     </footer>
 
@@ -96,7 +571,9 @@
         // Handle navbar scroll effect
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
+            const currentScroll = window.scrollY;
+            
+            if (currentScroll > 50) {
                 navbar.classList.add('scrolled');
             } else {
                 navbar.classList.remove('scrolled');
@@ -108,10 +585,11 @@
         const navMenu = document.getElementById('navMenu');
         if (hamburger && navMenu) {
             hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
                 navMenu.classList.toggle('active');
             });
         }
+        
     </script>
 </body>
 </html>
-
